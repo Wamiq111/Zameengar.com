@@ -11,6 +11,7 @@ export default function EditProperty() {
     const { profile } = useAuth();
 
     const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
     const [purpose, setPurpose] = useState('Sale');
     const [propertyType, setPropertyType] = useState('House');
     const [city, setCity] = useState('');
@@ -44,6 +45,7 @@ export default function EditProperty() {
         const { data, error } = await supabase.from('properties').select('*').eq('id', id).single();
         if (data) {
             setTitle(data.title);
+            setDescription(data.description || '');
             setPurpose(data.purpose);
             setPropertyType(data.property_type);
             setCity(data.city);
@@ -93,6 +95,7 @@ export default function EditProperty() {
         // 1. Update Basic Properties
         const { error } = await supabase.from('properties').update({
             title,
+            description,
             price: parseFloat(price),
             purpose,
             property_type: propertyType,
@@ -167,6 +170,10 @@ export default function EditProperty() {
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Property Title</label>
                             <input value={title} onChange={e => setTitle(e.target.value)} type="text" className="w-full p-3 border rounded-lg focus:ring-green-500 outline-none" required />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Description & Links (Optional)</label>
+                            <textarea value={description} onChange={e => setDescription(e.target.value)} rows={4} className="w-full p-3 border rounded-lg focus:ring-green-500 outline-none" placeholder="Enter extra details, external links, etc." />
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                             <div>

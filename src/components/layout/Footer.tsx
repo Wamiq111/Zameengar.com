@@ -30,8 +30,6 @@ export const Footer = () => {
                         <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-4">Contact</h4>
                         <ul className="space-y-2 text-sm">
                             <li><a href="mailto:support@zameengar.com" className="hover:text-green-400 transition">support@zameengar.com</a></li>
-                            <li><a href="tel:+923001234567" className="hover:text-green-400 transition">+92 300 1234567</a></li>
-                            <li><a href="https://wa.me/923001234567" target="_blank" rel="noopener noreferrer" className="hover:text-green-400 transition">WhatsApp Us</a></li>
                         </ul>
                     </div>
                 </div>

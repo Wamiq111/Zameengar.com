@@ -14,6 +14,7 @@ export default function AddProperty() {
 
     // Step 1 Details
     const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
     const [purpose, setPurpose] = useState('Sale');
     const [propertyType, setPropertyType] = useState('House');
     const [city, setCity] = useState('');
@@ -94,6 +95,7 @@ export default function AddProperty() {
         const { data: propertyData, error: propertyError } = await supabase.from('properties').insert({
             owner_id: profile.id,
             title,
+            description,
             price: parseFloat(price),
             purpose,
             property_type: propertyType,
@@ -216,6 +218,10 @@ export default function AddProperty() {
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Property Title</label>
                                 <input value={title} onChange={e => setTitle(e.target.value)} type="text" className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all" placeholder="e.g. 10 Marla Beautiful House in DHA" />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Description & Links (Optional)</label>
+                                <textarea value={description} onChange={e => setDescription(e.target.value)} rows={3} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all" placeholder="Enter any extra details, links to YouTube videos or websites here..." />
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
