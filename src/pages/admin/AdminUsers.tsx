@@ -6,10 +6,17 @@ import { Button } from '../../components/ui/button';
 export default function AdminUsers() {
     const [users, setUsers] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [globalLimit, setGlobalLimit] = useState(5);
 
     useEffect(() => {
         fetchUsers();
+        fetchGlobalLimit();
     }, []);
+
+    const fetchGlobalLimit = async () => {
+        const { data } = await supabase.from('platform_settings').select('value').eq('key', 'property_listing_limit').single();
+        if (data && data.value) setGlobalLimit(parseInt(data.value));
+    };
 
     const fetchUsers = async () => {
         setLoading(true);
@@ -57,7 +64,6 @@ export default function AdminUsers() {
                                 <th className="p-4 font-semibold">Email</th>
                                 <th className="p-4 font-semibold">Role</th>
                                 <th className="p-4 font-semibold">Status</th>
-                                <th className="p-4 font-semibold">Status</th>
                                 <th className="p-4 font-semibold">Joined</th>
                                 <th className="p-4 font-semibold">Limit Override</th>
                                 <th className="p-4 font-semibold text-right">Actions</th>
@@ -79,7 +85,7 @@ export default function AdminUsers() {
                                         </span>
                                     </td>
                                     <td className="p-4">{new Date(user.created_at).toLocaleDateString()}</td>
-                                    <td className="p-4 font-bold text-green-700">{user.property_limit_override !== null ? user.property_limit_override : 'Default'}</td>
+                                    <td className="p-4 font-bold text-green-700">{user.property_limit_override !== null ? user.property_limit_override : `${globalLimit} (Default)`}</td>
                                     <td className="p-4 text-right whitespace-nowrap">
                                         <Button variant="outline" size="sm" onClick={() => setLimit(user.id)} className="mr-2 border-gray-300 text-gray-700">Edit Limit</Button>
                                         {user.role !== 'admin' && (
