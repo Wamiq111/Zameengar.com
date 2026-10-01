@@ -1,0 +1,169 @@
+
+Rsbuild v1.7.6
+
+npx : warn    [2m[rsbu
+ild:config][22m The [
+33m"source.alias"[39m 
+config is deprecated, 
+use [33m"resolve.alias
+"[39m instead.
+At line:1 char:84
++ ... Desktop\Zameengar
+.com\build_err.txt", 
+(npx rsbuild build 
+2>&1 | Out-S ...
++                      
+                      
+~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (warn    [2m[   
+ rs..."[39m instea    
+d.:String) [], Rem    
+oteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+info    build started...
+error   [1m[31mBuild 
+errors: [39m[22m
+File: [36m.\src\index.
+css:1:1[39m
+  ├ù Module build 
+failed (from ./node_mod
+ules/@rsbuild/core/comp
+iled/postcss-loader/ind
+ex.js):
+  Γò░ΓöÇΓû╢   ├ù 
+Error: It looks like 
+you're trying to use 
+`tailwindcss` directly 
+as a PostCSS plugin. 
+The PostCSS plugin has 
+moved to a separate 
+package, so to 
+continue using 
+Tailwind CSS with 
+PostCSS you'll need to 
+install 
+`@tailwindcss/postcss` 
+and update your 
+PostCSS configuration.
+        Γöé     at mt (
+C:\Users\Hp\Desktop\Zam
+eengar.com\node_modules
+\tailwindcss\dist\lib.j
+s:38:1643)
+        Γöé     at 
+LazyResult.runOnRoot (C
+:\Users\Hp\Desktop\Zame
+engar.com\node_modules\
+@rsbuild\core\compiled\
+postcss\index.js:1:1806
+8)
+        Γöé     at 
+LazyResult.runAsync (C:
+\Users\Hp\Desktop\Zamee
+ngar.com\node_modules\@
+rsbuild\core\compiled\p
+ostcss\index.js:1:17139
+)
+        Γöé     at 
+LazyResult.async (C:\Us
+ers\Hp\Desktop\Zameenga
+r.com\node_modules\@rsb
+uild\core\compiled\post
+css\index.js:1:15634)
+        Γöé     at 
+LazyResult.then (C:\Use
+rs\Hp\Desktop\Zameengar
+.com\node_modules\@rsbu
+ild\core\compiled\postc
+ss\index.js:1:19306)
+
+File: [36m./src/index.
+css:1:1[39m
+  ├ù Module build 
+failed (from ./node_mod
+ules/@rspack/core/dist/
+cssExtractLoader.js):
+  Γò░ΓöÇΓû╢   ├ù 
+Error: Module build 
+failed (from ./node_mod
+ules/@rsbuild/core/comp
+iled/postcss-loader/ind
+ex.js):
+        Γöé     at C:\U
+sers\Hp\Desktop\Zameeng
+ar.com\node_modules\@rs
+pack\core\dist\index.js
+:3331:107
+      
+[2mImport traces 
+(entry ΓåÆ error):
+  ./src/main.tsx
+  ./src/index.css [1m
+[31m├ù[39m[22m[2m[2
+2m
+
+error   build failed 
+in [1m0.61[22m s
+error   Rspack build 
+failed.
+    at file:///C:/Users
+/Hp/Desktop/Zameengar.c
+om/node_modules/@rsbuil
+d/core/dist/131.js:4214
+:145
+    at C:\Users\Hp\Desk
+top\Zameengar.com\node_
+modules\@rspack\core\di
+st\index.js:10967:46
+    at C:\Users\Hp\Desk
+top\Zameengar.com\node_
+modules\@rspack\core\di
+st\index.js:7135:113
+    at done (C:\Users\H
+p\Desktop\Zameengar.com
+\node_modules\@rspack\c
+ore\node_modules\@rspac
+k\lite-tapable\dist\ind
+ex.cjs:373:13)
+    at AsyncParallelHoo
+k.callAsyncStageRange (
+C:\Users\Hp\Desktop\Zam
+eengar.com\node_modules
+\@rspack\core\node_modu
+les\@rspack\lite-tapabl
+e\dist\index.cjs:379:46
+)
+    at AsyncParallelHoo
+k.callAsync (C:\Users\H
+p\Desktop\Zameengar.com
+\node_modules\@rspack\c
+ore\node_modules\@rspac
+k\lite-tapable\dist\ind
+ex.cjs:101:21)
+    at Cache.shutdown (
+C:\Users\Hp\Desktop\Zam
+eengar.com\node_modules
+\@rspack\core\dist\inde
+x.js:7188:33)
+    at C:\Users\Hp\Desk
+top\Zameengar.com\node_
+modules\@rspack\core\di
+st\index.js:10966:28
+    at done (C:\Users\H
+p\Desktop\Zameengar.com
+\node_modules\@rspack\c
+ore\node_modules\@rspac
+k\lite-tapable\dist\ind
+ex.cjs:426:13)
+    at AsyncSeriesHook.
+callAsyncStageRange (C:
+\Users\Hp\Desktop\Zamee
+ngar.com\node_modules\@
+rspack\core\node_module
+s\@rspack\lite-tapable\
+dist\index.cjs:432:46)

@@ -1,0 +1,40 @@
+STDOUT:
+
+Rsbuild v1.7.6
+
+info    build started...
+
+
+STDERR:
+warn    [2m[rsbuild:config][22m The [33m"source.alias"[39m config is deprecated, use [33m"resolve.alias"[39m instead.
+error   [1m[31mBuild errors: [39m[22m
+File: [36m.\src\index.css:1:1[39m
+  × Module build failed (from ./node_modules/@rsbuild/core/compiled/postcss-loader/index.js):
+  ╰─▶   × Error: It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
+        │     at mt (C:\Users\Hp\Desktop\Zameengar.com\node_modules\tailwindcss\dist\lib.js:38:1643)
+        │     at LazyResult.runOnRoot (C:\Users\Hp\Desktop\Zameengar.com\node_modules\@rsbuild\core\compiled\postcss\index.js:1:18068)
+        │     at LazyResult.runAsync (C:\Users\Hp\Desktop\Zameengar.com\node_modules\@rsbuild\core\compiled\postcss\index.js:1:17139)
+        │     at LazyResult.async (C:\Users\Hp\Desktop\Zameengar.com\node_modules\@rsbuild\core\compiled\postcss\index.js:1:15634)
+        │     at LazyResult.then (C:\Users\Hp\Desktop\Zameengar.com\node_modules\@rsbuild\core\compiled\postcss\index.js:1:19306)
+
+File: [36m./src/index.css:1:1[39m
+  × Module build failed (from ./node_modules/@rspack/core/dist/cssExtractLoader.js):
+  ╰─▶   × Error: Module build failed (from ./node_modules/@rsbuild/core/compiled/postcss-loader/index.js):
+        │     at C:\Users\Hp\Desktop\Zameengar.com\node_modules\@rspack\core\dist\index.js:3331:107
+      
+[2mImport traces (entry → error):
+  ./src/main.tsx
+  ./src/index.css [1m[31m×[39m[22m[2m[22m
+
+error   build failed in [1m0.75[22m s
+error   Rspack build failed.
+    at file:///C:/Users/Hp/Desktop/Zameengar.com/node_modules/@rsbuild/core/dist/131.js:4214:145
+    at C:\Users\Hp\Desktop\Zameengar.com\node_modules\@rspack\core\dist\index.js:10967:46
+    at C:\Users\Hp\Desktop\Zameengar.com\node_modules\@rspack\core\dist\index.js:7135:113
+    at done (C:\Users\Hp\Desktop\Zameengar.com\node_modules\@rspack\core\node_modules\@rspack\lite-tapable\dist\index.cjs:373:13)
+    at AsyncParallelHook.callAsyncStageRange (C:\Users\Hp\Desktop\Zameengar.com\node_modules\@rspack\core\node_modules\@rspack\lite-tapable\dist\index.cjs:379:46)
+    at AsyncParallelHook.callAsync (C:\Users\Hp\Desktop\Zameengar.com\node_modules\@rspack\core\node_modules\@rspack\lite-tapable\dist\index.cjs:101:21)
+    at Cache.shutdown (C:\Users\Hp\Desktop\Zameengar.com\node_modules\@rspack\core\dist\index.js:7188:33)
+    at C:\Users\Hp\Desktop\Zameengar.com\node_modules\@rspack\core\dist\index.js:10966:28
+    at done (C:\Users\Hp\Desktop\Zameengar.com\node_modules\@rspack\core\node_modules\@rspack\lite-tapable\dist\index.cjs:426:13)
+    at AsyncSeriesHook.callAsyncStageRange (C:\Users\Hp\Desktop\Zameengar.com\node_modules\@rspack\core\node_modules\@rspack\lite-tapable\dist\index.cjs:432:46)
