@@ -53,7 +53,9 @@ export default function AddProperty() {
 
             // Try fetching limit (fallback to 5 if table missing yet)
             const { data: limitData } = await supabase.from('platform_settings').select('value').eq('key', 'property_listing_limit').single();
-            const maxLimit = limitData ? parseInt(limitData.value) : 5;
+            const maxLimit = profile.property_limit_override !== null
+                ? profile.property_limit_override
+                : (limitData ? parseInt(limitData.value) : 5);
             setListingLimit(maxLimit);
 
             // Fetch user count

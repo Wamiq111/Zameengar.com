@@ -6,7 +6,7 @@ import { supabase } from '../../lib/supabase';
 
 export default function DashboardOverview() {
     const { profile } = useAuth();
-    const [stats, setStats] = useState({ listings: 0, pending: 0, favorites: 0, inquiries: 0 });
+    const [stats, setStats] = useState({ listings: 0, pending: 0, favorites: 0, inquiries: 0, featured: 0, verified: 0 });
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -15,17 +15,21 @@ export default function DashboardOverview() {
 
     const fetchStats = async () => {
         setLoading(true);
-        const [listingsRes, pendingRes, favRes, inqRes] = await Promise.all([
+        const [listingsRes, pendingRes, favRes, inqRes, featRes, verRes] = await Promise.all([
             supabase.from('properties').select('id', { count: 'exact', head: true }).eq('owner_id', profile?.id),
             supabase.from('properties').select('id', { count: 'exact', head: true }).eq('owner_id', profile?.id).eq('status', 'pending'),
             supabase.from('favorites').select('id', { count: 'exact', head: true }).eq('user_id', profile?.id),
             supabase.from('inquiries').select('id', { count: 'exact', head: true }).eq('receiver_id', profile?.id).eq('status', 'new'),
+            supabase.from('properties').select('id', { count: 'exact', head: true }).eq('owner_id', profile?.id).eq('is_featured', true),
+            supabase.from('properties').select('id', { count: 'exact', head: true }).eq('owner_id', profile?.id).eq('is_verified', true),
         ]);
         setStats({
             listings: listingsRes.count || 0,
             pending: pendingRes.count || 0,
             favorites: favRes.count || 0,
             inquiries: inqRes.count || 0,
+            featured: featRes.count || 0,
+            verified: verRes.count || 0,
         });
         setLoading(false);
     };
@@ -43,7 +47,7 @@ export default function DashboardOverview() {
                 </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
                 <div className="bg-white p-6 rounded-xl border shadow-sm">
                     <div className="flex justify-between items-center mb-4">
                         <h3 className="text-gray-600 font-medium">Total Listings</h3>
@@ -51,6 +55,14 @@ export default function DashboardOverview() {
                     </div>
                     <div className="text-3xl font-bold text-gray-900">{loading ? '...' : stats.listings}</div>
                     <p className="text-sm text-gray-500 mt-2">{loading ? '' : `${stats.pending} Pending Approval`}</p>
+                </div>
+                <div className="bg-white p-6 rounded-xl border shadow-sm">
+                    <div className="flex justify-between items-center mb-4">
+                        <h3 className="text-gray-600 font-medium">Achievements</h3>
+                        <span className="text-yellow-500 text-xl font-bold">★</span>
+                    </div>
+                    <div className="text-lg font-bold text-gray-900 border-b pb-1 border-gray-100">{loading ? '...' : stats.featured} Featured</div>
+                    <div className="text-lg font-bold text-gray-900 pt-2">{loading ? '...' : stats.verified} Verified</div>
                 </div>
                 <div className="bg-white p-6 rounded-xl border shadow-sm">
                     <div className="flex justify-between items-center mb-4">

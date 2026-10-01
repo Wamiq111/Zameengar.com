@@ -33,6 +33,7 @@ export default function Home() {
             .from('properties')
             .select('*, property_images(image_url, is_primary)')
             .eq('status', 'approved')
+            .order('is_featured', { ascending: false })
             .order('created_at', { ascending: false })
             .limit(6);
         if (data) setFeaturedProperties(data);
@@ -164,6 +165,11 @@ export default function Home() {
                                     <div className="h-52 bg-gray-200 relative overflow-hidden">
                                         {img ? <img src={img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" /> : <div className="w-full h-full flex items-center justify-center text-gray-400">No Image</div>}
                                         <div className="absolute top-3 left-3 bg-green-700/90 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">For {item.purpose}</div>
+                                        {item.is_featured && (
+                                            <div className="absolute top-3 left-24 bg-yellow-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                                                Featured
+                                            </div>
+                                        )}
                                         {item.is_verified && (
                                             <div className="absolute top-3 right-3 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
                                                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>

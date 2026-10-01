@@ -29,6 +29,17 @@ export default function AdminUsers() {
         else alert('Error updating user: ' + error.message);
     };
 
+    const setLimit = async (id: string) => {
+        const amt = prompt('Enter a new property limit for this user (or leave empty to reset to global default):');
+        let override = null;
+        if (amt && !isNaN(parseInt(amt))) {
+            override = parseInt(amt);
+        }
+        const { error } = await supabase.from('profiles').update({ property_limit_override: override }).eq('id', id);
+        if (!error) fetchUsers();
+        else alert('Error updating limit: ' + error.message);
+    };
+
     return (
         <div className="p-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-8">User Management</h1>
@@ -46,7 +57,9 @@ export default function AdminUsers() {
                                 <th className="p-4 font-semibold">Email</th>
                                 <th className="p-4 font-semibold">Role</th>
                                 <th className="p-4 font-semibold">Status</th>
+                                <th className="p-4 font-semibold">Status</th>
                                 <th className="p-4 font-semibold">Joined</th>
+                                <th className="p-4 font-semibold">Limit Override</th>
                                 <th className="p-4 font-semibold text-right">Actions</th>
                             </tr>
                         </thead>
@@ -66,7 +79,9 @@ export default function AdminUsers() {
                                         </span>
                                     </td>
                                     <td className="p-4">{new Date(user.created_at).toLocaleDateString()}</td>
-                                    <td className="p-4 text-right">
+                                    <td className="p-4 font-bold text-green-700">{user.property_limit_override !== null ? user.property_limit_override : 'Default'}</td>
+                                    <td className="p-4 text-right whitespace-nowrap">
+                                        <Button variant="outline" size="sm" onClick={() => setLimit(user.id)} className="mr-2 border-gray-300 text-gray-700">Edit Limit</Button>
                                         {user.role !== 'admin' && (
                                             <Button
                                                 variant="ghost"

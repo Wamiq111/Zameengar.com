@@ -71,11 +71,11 @@ export default function Properties() {
         if (maxArea) query = query.lte('area_value', parseFloat(maxArea));
 
         // Apply sorting
-        if (sort === 'newest') query = query.order('created_at', { ascending: false });
-        else if (sort === 'oldest') query = query.order('created_at', { ascending: true });
-        else if (sort === 'price-asc') query = query.order('price', { ascending: true });
-        else if (sort === 'price-desc') query = query.order('price', { ascending: false });
-        else query = query.order('created_at', { ascending: false }); // default fallback
+        if (sort === 'newest') query = query.order('is_featured', { ascending: false }).order('created_at', { ascending: false });
+        else if (sort === 'oldest') query = query.order('is_featured', { ascending: false }).order('created_at', { ascending: true });
+        else if (sort === 'price-asc') query = query.order('is_featured', { ascending: false }).order('price', { ascending: true });
+        else if (sort === 'price-desc') query = query.order('is_featured', { ascending: false }).order('price', { ascending: false });
+        else query = query.order('is_featured', { ascending: false }).order('created_at', { ascending: false }); // default fallback
 
         const { data, error } = await query;
         if (!error && data) {
@@ -185,6 +185,17 @@ export default function Properties() {
                                             <div className="absolute top-3 left-3 bg-green-700/90 backdrop-blur text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">
                                                 For {item.purpose}
                                             </div>
+                                            {item.is_featured && (
+                                                <div className="absolute top-3 left-[90px] md:left-24 bg-yellow-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">
+                                                    Featured
+                                                </div>
+                                            )}
+                                            {item.is_verified && (
+                                                <div className="absolute top-3 right-3 bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1">
+                                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                                                    Verified
+                                                </div>
+                                            )}
                                         </div>
                                         <div className="p-5 flex flex-col flex-1">
                                             <div className="text-xl font-bold text-green-700 mb-1">PKR {item.price.toLocaleString()}</div>
