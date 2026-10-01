@@ -8,10 +8,12 @@ export default function AdminProperties() {
     const [properties, setProperties] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('pending');
+    const [searchAdId, setSearchAdId] = useState('');
+    const [activeSearch, setActiveSearch] = useState('');
 
     useEffect(() => {
         fetchProperties();
-    }, [filter]);
+    }, [filter, activeSearch]);
 
     const fetchProperties = async () => {
         setLoading(true);
@@ -22,6 +24,10 @@ export default function AdminProperties() {
 
         if (filter !== 'all') {
             query = query.eq('status', filter);
+        }
+
+        if (activeSearch) {
+            query = query.eq('ad_id', activeSearch.trim());
         }
 
         const { data, error } = await query;
@@ -58,17 +64,31 @@ export default function AdminProperties() {
         <div className="p-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-6">Properties Management</h1>
 
-            {/* Filter Tabs */}
-            <div className="flex gap-3 mb-6">
-                {['pending', 'approved', 'rejected', 'all'].map(f => (
-                    <button
-                        key={f}
-                        onClick={() => setFilter(f)}
-                        className={`px-4 py-2 rounded-lg font-medium text-sm capitalize ${filter === f ? 'bg-green-700 text-white' : 'bg-white border text-gray-700 hover:bg-gray-50'}`}
-                    >
-                        {f === 'all' ? 'All Properties' : f}
-                    </button>
-                ))}
+            {/* Filter Tabs & Search */}
+            <div className="flex flex-col xl:flex-row gap-4 mb-6 justify-between xl:items-center">
+                <div className="flex gap-2 flex-wrap">
+                    {['pending', 'approved', 'rejected', 'all'].map(f => (
+                        <button
+                            key={f}
+                            onClick={() => setFilter(f)}
+                            className={`px-4 py-2 rounded-lg font-medium text-sm capitalize ${filter === f ? 'bg-green-700 text-white' : 'bg-white border text-gray-700 hover:bg-gray-50'}`}
+                        >
+                            {f === 'all' ? 'All Properties' : f}
+                        </button>
+                    ))}
+                </div>
+                <div className="flex gap-2">
+                    <input
+                        type="number"
+                        value={searchAdId}
+                        onChange={e => setSearchAdId(e.target.value)}
+                        placeholder="Search Ad ID..."
+                        className="px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-green-500"
+                        onKeyDown={e => e.key === 'Enter' && setActiveSearch(searchAdId)}
+                    />
+                    <Button onClick={() => setActiveSearch(searchAdId)} className="bg-slate-800 text-white hover:bg-slate-900">Search</Button>
+                    {activeSearch && <Button onClick={() => { setSearchAdId(''); setActiveSearch(''); }} variant="outline">Clear</Button>}
+                </div>
             </div>
 
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-x-auto">
@@ -82,6 +102,7 @@ export default function AdminProperties() {
                     <table className="w-full text-left text-sm text-gray-600">
                         <thead className="bg-gray-100 text-gray-900 border-b">
                             <tr>
+                                <th className="p-4 font-semibold">Ad ID</th>
                                 <th className="p-4 font-semibold">Property Title</th>
                                 <th className="p-4 font-semibold">Owner</th>
                                 <th className="p-4 font-semibold">Price</th>
@@ -93,6 +114,7 @@ export default function AdminProperties() {
                         <tbody>
                             {properties.map((item) => (
                                 <tr key={item.id} className="border-b last:border-b-0 hover:bg-gray-50 transition">
+                                    <td className="p-4 font-bold text-gray-900">#{item.ad_id || '-'}</td>
                                     <td className="p-4 font-medium text-gray-900 max-w-[200px] truncate">{item.title}</td>
                                     <td className="p-4">
                                         <div>{item.owner?.full_name || 'Unknown'}</div>
