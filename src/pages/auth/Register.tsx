@@ -19,6 +19,24 @@ export default function Register() {
         setErrorMsg('');
         setSuccessMsg('');
 
+        if (fullName.trim().length < 3) {
+            setErrorMsg("Full name must be at least 3 characters long.");
+            setLoading(false);
+            return;
+        }
+
+        if (!email.toLowerCase().endsWith('@gmail.com')) {
+            setErrorMsg("Registration is strictly restricted to @gmail.com email addresses only.");
+            setLoading(false);
+            return;
+        }
+
+        if (password.length < 6) {
+            setErrorMsg("Password must be at least 6 characters.");
+            setLoading(false);
+            return;
+        }
+
         const { error } = await supabase.auth.signUp({
             email,
             password,

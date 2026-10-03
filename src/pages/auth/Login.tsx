@@ -14,6 +14,13 @@ export default function Login() {
         e.preventDefault();
         setLoading(true);
         setErrorMsg('');
+
+        if (!email.toLowerCase().endsWith('@gmail.com')) {
+            setErrorMsg("Only @gmail.com accounts are permitted.");
+            setLoading(false);
+            return;
+        }
+
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) {
             setErrorMsg(error.message);

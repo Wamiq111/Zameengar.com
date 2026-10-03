@@ -96,6 +96,11 @@ export default function AddProperty() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!profile) return;
+
+        if (parseFloat(price) <= 0) return alert("Price must be greater than zero.");
+        if (parseFloat(areaValue) <= 0) return alert("Area must be greater than zero.");
+        if (images.length === 0) return alert("Please upload at least one property image.");
+
         setLoading(true);
 
         // 1. Insert Property
@@ -275,7 +280,12 @@ export default function AddProperty() {
                                 </div>
                             </div>
                             <div className="pt-4 flex justify-end">
-                                <Button onClick={() => setStep(2)} disabled={!title || !city || !phone} className="bg-green-700 hover:bg-green-800 px-8 py-6 text-lg">Next Step</Button>
+                                <Button onClick={() => {
+                                    if (title.trim().length < 10) return alert("Title must be at least 10 characters long.");
+                                    const cleanPhone = phone.replace(/\D/g, '');
+                                    if (cleanPhone.length < 10) return alert("Please enter a valid phone number.");
+                                    setStep(2);
+                                }} disabled={!title || !city || !phone} className="bg-green-700 hover:bg-green-800 px-8 py-6 text-lg">Next Step</Button>
                             </div>
                         </div>
                     </div>

@@ -12,6 +12,10 @@ export default function ContactUs() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        if (message.trim().length < 15) {
+            alert("Please provide a more detailed message (minimum 15 characters).");
+            return;
+        }
         setSubmitted(true);
     };
 

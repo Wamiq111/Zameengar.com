@@ -90,6 +90,11 @@ export default function EditProperty() {
 
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (title.trim().length < 10) return alert("Title must be at least 10 characters long.");
+        if (parseFloat(price) <= 0) return alert("Price must be greater than zero.");
+        if (parseFloat(areaValue) <= 0) return alert("Area must be greater than zero.");
+
         setSaving(true);
 
         // 1. Update Basic Properties
