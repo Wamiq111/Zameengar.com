@@ -32,7 +32,8 @@ export default function ContactUs() {
                                 <p className="text-green-700 text-sm">Thank you for reaching out. Our team will get back to you within 24-48 hours.</p>
                             </div>
                         ) : (
-                            <form className="space-y-4" onSubmit={handleSubmit}>
+                            <form className="space-y-4" onSubmit={handleSubmit} name="contact" method="POST" data-netlify="true">
+                                <input type="hidden" name="form-name" value="contact" />
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                                     <input value={name} onChange={e => setName(e.target.value)} type="text" required className="w-full p-3 border rounded-lg outline-none focus:ring-2 focus:ring-green-500" placeholder="Your name" />

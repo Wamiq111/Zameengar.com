@@ -7,6 +7,7 @@ export default function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [fullName, setFullName] = useState('');
+    const [accountType, setAccountType] = useState('user');
     const [loading, setLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
     const [successMsg, setSuccessMsg] = useState('');
@@ -22,7 +23,7 @@ export default function Register() {
             email,
             password,
             options: {
-                data: { full_name: fullName }
+                data: { full_name: fullName, account_type: accountType }
             }
         });
 
@@ -49,6 +50,17 @@ export default function Register() {
                             value={fullName} onChange={e => setFullName(e.target.value)}
                             className="mt-1 block w-full border-gray-300 rounded-md shadow-sm border p-2 focus:ring-green-500 focus:border-green-500"
                         />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">I am registering as</label>
+                        <select
+                            value={accountType} onChange={e => setAccountType(e.target.value)}
+                            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm border p-2 focus:ring-green-500 focus:border-green-500"
+                        >
+                            <option value="user">Individual / Buyer / Property Owner</option>
+                            <option value="dealer">Real Estate Dealer</option>
+                            <option value="agency">Real Estate Agency</option>
+                        </select>
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Email</label>

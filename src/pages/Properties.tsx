@@ -15,6 +15,7 @@ export default function Properties() {
     const [city, setCity] = useState(searchParams.get('city') || '');
     const [purpose, setPurpose] = useState('All');
     const [propertyType, setPropertyType] = useState(searchParams.get('type') || 'All');
+    const [listedBy, setListedBy] = useState('All');
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
 
@@ -61,6 +62,7 @@ export default function Properties() {
         // Apply filters
         if (purpose !== 'All') query = query.eq('purpose', purpose);
         if (propertyType !== 'All') query = query.eq('property_type', propertyType);
+        if (listedBy !== 'All') query = query.eq('listed_by_type', listedBy.toLowerCase());
         if (city) query = query.ilike('city', `%${city}%`);
         if (minPrice) query = query.gte('price', parseFloat(minPrice));
         if (maxPrice) query = query.lte('price', parseFloat(maxPrice));
@@ -115,6 +117,15 @@ export default function Properties() {
                                 <option>Plot</option>
                                 <option>Commercial</option>
                                 <option>Farmhouse</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label className="text-sm font-medium text-gray-700 block mb-1">Listed By</label>
+                            <select value={listedBy} onChange={e => setListedBy(e.target.value)} className="w-full border rounded-lg p-2 text-sm bg-white outline-none focus:ring-2 focus:ring-green-500">
+                                <option>All</option>
+                                <option value="owner">Owner</option>
+                                <option value="dealer">Dealer</option>
+                                <option value="agency">Agency</option>
                             </select>
                         </div>
                         <div>

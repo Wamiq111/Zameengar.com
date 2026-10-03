@@ -60,9 +60,11 @@ export default function AdminUsers() {
                     <table className="w-full text-left text-sm text-gray-600">
                         <thead className="bg-gray-100 text-gray-900 border-b">
                             <tr>
-                                <th className="p-4 font-semibold">Name</th>
-                                <th className="p-4 font-semibold">Email</th>
                                 <th className="p-4 font-semibold">Role</th>
+                                <th className="p-4 font-semibold">Account Type</th>
+                                <th className="p-4 font-semibold">Status</th>
+                                <th className="p-4 font-semibold">Role</th>
+                                <th className="p-4 font-semibold">Account Type</th>
                                 <th className="p-4 font-semibold">Status</th>
                                 <th className="p-4 font-semibold">Joined</th>
                                 <th className="p-4 font-semibold">Limit Override</th>
@@ -78,6 +80,9 @@ export default function AdminUsers() {
                                         <span className={`px-2 py-1 rounded text-xs font-medium ${user.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-gray-100 text-gray-800'}`}>
                                             {user.role?.charAt(0).toUpperCase() + user.role?.slice(1) || 'User'}
                                         </span>
+                                    </td>
+                                    <td className="p-4 font-medium capitalize text-gray-600">
+                                        {user.account_type || 'User'}
                                     </td>
                                     <td className="p-4">
                                         <span className={`px-2 py-1 rounded text-xs font-medium ${user.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>

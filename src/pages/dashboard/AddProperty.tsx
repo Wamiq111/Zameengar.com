@@ -22,6 +22,7 @@ export default function AddProperty() {
 
     // Step 2 Details
     const [price, setPrice] = useState('');
+    const [listedByType, setListedByType] = useState('owner');
     const [areaValue, setAreaValue] = useState('');
     const [areaUnit, setAreaUnit] = useState('Marla');
     const [bedrooms, setBedrooms] = useState('3');
@@ -50,6 +51,10 @@ export default function AddProperty() {
 
         const checkLimits = async () => {
             if (!profile) return;
+
+            if (profile.account_type) {
+                setListedByType(profile.account_type === 'user' ? 'owner' : profile.account_type);
+            }
 
             // Try fetching limit (fallback to 5 if table missing yet)
             const { data: limitData } = await supabase.from('platform_settings').select('value').eq('key', 'property_listing_limit').single();
@@ -101,6 +106,7 @@ export default function AddProperty() {
             price: parseFloat(price),
             purpose,
             property_type: propertyType,
+            listed_by_type: listedByType,
             city,
             area_value: parseFloat(areaValue || '0'),
             area_unit: areaUnit,
@@ -244,120 +250,129 @@ export default function AddProperty() {
                                     </select>
                                 </div>
                             </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
-                                <select value={city} onChange={e => setCity(e.target.value)} required className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 bg-white outline-none">
-                                    <option value="" disabled>Select a City</option>
-                                    {locations.map((loc, idx) => (
-                                        <option key={idx} value={loc.city}>{loc.city}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Contact Phone Number <span className="text-red-500">*</span></label>
-                                <input value={phone} onChange={e => setPhone(e.target.value)} type="tel" required className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" placeholder="e.g. 0300-1234567" />
-                                <p className="text-xs text-gray-500 mt-1">This will be saved to your profile for buyer inquiries.</p>
-                            </div>
-                        </div>
-                        <div className="pt-4 flex justify-end">
-                            <Button onClick={() => setStep(2)} disabled={!title || !city || !phone} className="bg-green-700 hover:bg-green-800 px-8 py-6 text-lg">Next Step</Button>
-                        </div>
-                    </div>
-                )}
-
-                {step === 2 && (
-                    <form className="space-y-6 animate-in slide-in-from-right-4" onSubmit={handleSubmit}>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Price (PKR)</label>
-                                <input value={price} onChange={e => setPrice(e.target.value)} type="number" required min="0" className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" placeholder="e.g. 15000000" />
-                            </div>
-                            <div className="grid grid-cols-2 gap-2">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Area</label>
-                                    <input value={areaValue} onChange={e => setAreaValue(e.target.value)} type="number" required min="0" className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" placeholder="e.g. 10" />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Unit</label>
-                                    <select value={areaUnit} onChange={e => setAreaUnit(e.target.value)} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 bg-white">
-                                        <option>Marla</option>
-                                        <option>Kanal</option>
-                                        <option>Sq. Ft.</option>
-                                        <option>Sq. Yd.</option>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Listed By Type</label>
+                                    <select value={listedByType} onChange={e => setListedByType(e.target.value)} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 bg-white outline-none">
+                                        <option value="owner">Owner / Individual</option>
+                                        <option value="dealer">Real Estate Dealer</option>
+                                        <option value="agency">Real Estate Agency</option>
                                     </select>
                                 </div>
-                            </div>
-                        </div>
-
-                        {(propertyType === 'House' || propertyType === 'Apartment' || propertyType === 'Farmhouse') && (
-                            <div className="grid grid-cols-2 gap-6">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Bedrooms</label>
-                                    <input value={bedrooms} onChange={e => setBedrooms(e.target.value)} type="number" min="0" className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" />
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
+                                    <select value={city} onChange={e => setCity(e.target.value)} required className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 bg-white outline-none">
+                                        <option value="" disabled>Select a City</option>
+                                        {locations.map((loc, idx) => (
+                                            <option key={idx} value={loc.city}>{loc.city}</option>
+                                        ))}
+                                    </select>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Bathrooms</label>
-                                    <input value={bathrooms} onChange={e => setBathrooms(e.target.value)} type="number" min="0" className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" />
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Contact Phone Number <span className="text-red-500">*</span></label>
+                                    <input value={phone} onChange={e => setPhone(e.target.value)} type="tel" required className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" placeholder="e.g. 0300-1234567" />
+                                    <p className="text-xs text-gray-500 mt-1">This will be saved to your profile for buyer inquiries.</p>
+                                </div>
+                            </div>
+                            <div className="pt-4 flex justify-end">
+                                <Button onClick={() => setStep(2)} disabled={!title || !city || !phone} className="bg-green-700 hover:bg-green-800 px-8 py-6 text-lg">Next Step</Button>
+                            </div>
+                        </div>
+                )}
+
+                        {step === 2 && (
+                            <form className="space-y-6 animate-in slide-in-from-right-4" onSubmit={handleSubmit}>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Price (PKR)</label>
+                                        <input value={price} onChange={e => setPrice(e.target.value)} type="number" required min="0" className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" placeholder="e.g. 15000000" />
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Area</label>
+                                            <input value={areaValue} onChange={e => setAreaValue(e.target.value)} type="number" required min="0" className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" placeholder="e.g. 10" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Unit</label>
+                                            <select value={areaUnit} onChange={e => setAreaUnit(e.target.value)} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 bg-white">
+                                                <option>Marla</option>
+                                                <option>Kanal</option>
+                                                <option>Sq. Ft.</option>
+                                                <option>Sq. Yd.</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {(propertyType === 'House' || propertyType === 'Apartment' || propertyType === 'Farmhouse') && (
+                                    <div className="grid grid-cols-2 gap-6">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Bedrooms</label>
+                                            <input value={bedrooms} onChange={e => setBedrooms(e.target.value)} type="number" min="0" className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Bathrooms</label>
+                                            <input value={bathrooms} onChange={e => setBathrooms(e.target.value)} type="number" min="0" className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" />
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className="border-t pt-6">
+                                    <label className="block text-sm font-medium text-gray-700 mb-3">Property Features (Optional)</label>
+                                    <div className="flex flex-wrap gap-2">
+                                        {COMMON_FEATURES.map(feature => (
+                                            <button
+                                                key={feature}
+                                                type="button"
+                                                onClick={() => toggleFeature(feature)}
+                                                className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-colors ${selectedFeatures.includes(feature)
+                                                    ? 'bg-green-100 text-green-800 border-green-200'
+                                                    : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'
+                                                    }`}
+                                            >
+                                                {selectedFeatures.includes(feature) && '✓ '}
+                                                {feature}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="border-t pt-6">
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Upload Property Images (Max 10)</label>
+                                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 bg-gray-50 flex flex-col items-center justify-center">
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            multiple
+                                            onChange={handleImageChange}
+                                            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+                                        />
+                                        {images.length > 0 && (
+                                            <p className="mt-2 text-sm text-gray-600 font-medium">Selected {images.length} images.</p>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="flex gap-4 pt-4">
+                                    <Button type="button" onClick={() => setStep(1)} variant="outline" className="px-8 py-6 text-lg w-1/3">Back</Button>
+                                    <Button type="submit" disabled={loading || !price || !areaValue} className="bg-green-700 hover:bg-green-800 px-8 py-6 text-lg w-2/3">
+                                        {loading ? (uploadStatus || 'Submitting...') : 'Submit Property'}
+                                    </Button>
+                                </div>
+                            </form>
+                        )}
+
+                        {step === 3 && (
+                            <div className="text-center py-12 animate-in zoom-in">
+                                <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl font-bold">✓</div>
+                                <h2 className="text-3xl font-bold text-gray-900 mb-4">Property Submitted!</h2>
+                                <p className="text-gray-600 text-lg max-w-md mx-auto">Your property has been successfully submitted and is currently pending administrator approval. You can view its status in your dashboard.</p>
+                                <div className="mt-8">
+                                    <Button onClick={() => window.location.href = '/dashboard/properties'} className="bg-green-700 hover:bg-green-800 px-8 py-4">View My Properties</Button>
                                 </div>
                             </div>
                         )}
-
-                        <div className="border-t pt-6">
-                            <label className="block text-sm font-medium text-gray-700 mb-3">Property Features (Optional)</label>
-                            <div className="flex flex-wrap gap-2">
-                                {COMMON_FEATURES.map(feature => (
-                                    <button
-                                        key={feature}
-                                        type="button"
-                                        onClick={() => toggleFeature(feature)}
-                                        className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-colors ${selectedFeatures.includes(feature)
-                                            ? 'bg-green-100 text-green-800 border-green-200'
-                                            : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'
-                                            }`}
-                                    >
-                                        {selectedFeatures.includes(feature) && '✓ '}
-                                        {feature}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className="border-t pt-6">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Upload Property Images (Max 10)</label>
-                            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 bg-gray-50 flex flex-col items-center justify-center">
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    multiple
-                                    onChange={handleImageChange}
-                                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
-                                />
-                                {images.length > 0 && (
-                                    <p className="mt-2 text-sm text-gray-600 font-medium">Selected {images.length} images.</p>
-                                )}
-                            </div>
-                        </div>
-
-                        <div className="flex gap-4 pt-4">
-                            <Button type="button" onClick={() => setStep(1)} variant="outline" className="px-8 py-6 text-lg w-1/3">Back</Button>
-                            <Button type="submit" disabled={loading || !price || !areaValue} className="bg-green-700 hover:bg-green-800 px-8 py-6 text-lg w-2/3">
-                                {loading ? (uploadStatus || 'Submitting...') : 'Submit Property'}
-                            </Button>
-                        </div>
-                    </form>
-                )}
-
-                {step === 3 && (
-                    <div className="text-center py-12 animate-in zoom-in">
-                        <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl font-bold">✓</div>
-                        <h2 className="text-3xl font-bold text-gray-900 mb-4">Property Submitted!</h2>
-                        <p className="text-gray-600 text-lg max-w-md mx-auto">Your property has been successfully submitted and is currently pending administrator approval. You can view its status in your dashboard.</p>
-                        <div className="mt-8">
-                            <Button onClick={() => window.location.href = '/dashboard/properties'} className="bg-green-700 hover:bg-green-800 px-8 py-4">View My Properties</Button>
-                        </div>
                     </div>
-                )}
-            </div>
         </div>
-    );
+            );
 }
